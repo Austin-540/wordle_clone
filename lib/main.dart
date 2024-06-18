@@ -44,6 +44,7 @@ class _MainAppState extends State<MainApp> {
                 controller: controller,
                 decoration: InputDecoration(label: Text("Guess here")),
                 onSubmitted: (value) { 
+                  
                   print(value);
                   if (value.length != 5) {
                     return;
@@ -51,6 +52,11 @@ class _MainAppState extends State<MainApp> {
                   List correctness = [];
                     if (word == value.toUpperCase()) {
                       showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                    } else if (guesses.length == 5) {
+                      showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
+                        title: Text("You lost :("),
+                        content: Text("The word was ${word}"),
+                      ));
                     }
                   for (int x = 0; x < value.length; x ++) {
                     if (word[x] == value[x].toUpperCase()) {
