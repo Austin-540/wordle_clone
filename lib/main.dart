@@ -17,8 +17,9 @@ class _MainAppState extends State<MainApp> {
   TextEditingController controller = TextEditingController();
   String word = "LINUX";
 
-  TextStyle greenText = TextStyle(color: Colors.green);
-  TextStyle orangeText = TextStyle(color: Colors.orange);
+  TextStyle greenText = TextStyle(color: Color.fromARGB(255, 67, 67, 67), fontSize: 30);
+  TextStyle orangeText = TextStyle(color: const Color.fromARGB(255, 82, 82, 82), fontSize: 30);
+  TextStyle greyText = TextStyle(fontSize: 30);
 
 
 
@@ -32,7 +33,16 @@ class _MainAppState extends State<MainApp> {
             for (var guess in guesses) ... [
               Row(children: [
                   for (int i =0; i < 5; i++) ... [
-                    Text(guess['string'][i], style: guess['correctness'][i],)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        color: guess['correctness'][i] == greyText? Colors.grey: guess['correctness'] == orangeText? Colors.orange: Colors.green,
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: Center(child: Text(guess['string'][i], style: guess['correctness'][i],))),
+                        ),
+                    )
                   ]
               ],),
               SizedBox(height: 20,)
@@ -64,7 +74,7 @@ class _MainAppState extends State<MainApp> {
                     } else if (word.contains(value[x].toUpperCase())) {
                         correctness.add(orangeText);
                       } else {
-                        correctness.add(null);
+                        correctness.add(greyText);
                       }
                   }
                   setState(() {
