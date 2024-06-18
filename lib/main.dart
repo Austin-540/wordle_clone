@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'dart:math';
 
+import 'package:flutter/services.dart';
+
 void main() {
   runApp(const MaterialApp(home:MainApp()));
 }
@@ -31,6 +33,10 @@ class _MainAppState extends State<MainApp> {
   TextStyle orangeText = TextStyle(color: const Color.fromARGB(255, 82, 82, 82), fontSize: 30);
   TextStyle greyText = TextStyle(fontSize: 30);
 
+  String currentGuess = "";
+
+  var inputFocusNode = FocusNode();
+
 
 
 
@@ -57,22 +63,22 @@ class _MainAppState extends State<MainApp> {
                     )
                   ]
               ],),
-              SizedBox(height: 20,)
+              SizedBox(height: 20,),
             ],
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(label: Text("Guess here")),
-                onSubmitted: (value) { 
-                  
-                  print(value);
-                  if (value.length != 5) {
-                    return;
-                  }
-                  List correctness = [];
-                    if (word == value.toUpperCase()) {
+            Text(currentGuess, style: TextStyle(fontSize: 30),),
+            KeyboardListener(focusNode: inputFocusNode, child: Text("This is a keyboard listener"), autofocus: true, 
+            onKeyEvent: (value) {
+
+              if (value.physicalKey == PhysicalKeyboardKey.enter) {
+                if (currentGuess.length !=5) {
+                  return;
+                }
+
+                print(currentGuess);
+
+                List correctness = [];
+                 if (word == currentGuess.toUpperCase()) {
                       showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
                     } else if (guesses.length == 5) {
                       showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
@@ -80,25 +86,32 @@ class _MainAppState extends State<MainApp> {
                         content: Text("The word was ${word}"),
                       ));
                     }
-                  for (int x = 0; x < value.length; x ++) {
-                    if (word[x] == value[x].toUpperCase()) {
+
+                    for (int x = 0; x < currentGuess.length; x ++) {
+                    if (word[x] == currentGuess[x].toUpperCase()) {
                       correctness.add(greenText);
-                    } else if (word.contains(value[x].toUpperCase())) {
+                    } else if (word.contains(currentGuess[x].toUpperCase())) {
                         correctness.add(orangeText);
                       } else {
                         correctness.add(greyText);
                       }
                   }
                   setState(() {
-                    guesses.add({"string": value.toUpperCase(), "correctness": correctness });
+                    guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
                   });
-                controller.clear();
-                
-                },
-              ),
-            )
-            
-          ],),
+
+
+
+                currentGuess = '';
+              }
+              
+              
+              setState(() {
+              currentGuess += value.character!.toUpperCase();
+              inputFocusNode.requestFocus();
+            });
+            }),
+                  ],),
         ),
       );
 
