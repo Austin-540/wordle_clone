@@ -15,6 +15,11 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   List guesses = [];
   TextEditingController controller = TextEditingController();
+  String word = "LINUX";
+
+  TextStyle greenText = TextStyle(color: Colors.green);
+  TextStyle orangeText = TextStyle(color: Colors.orange);
+
 
 
 
@@ -26,7 +31,12 @@ class _MainAppState extends State<MainApp> {
         body: Center(
           child: Column(children: [
             for (var guess in guesses) ... [
-              Text(guess)
+              Row(children: [
+                  for (int i =0; i < 5; i++) ... [
+                    Text(guess['string'][i], style: guess['correctness'][i],)
+                  ]
+              ],),
+              SizedBox(height: 20,)
             ],
             Spacer(),
             Padding(
@@ -34,8 +44,24 @@ class _MainAppState extends State<MainApp> {
               child: TextField(
                 controller: controller,
                 decoration: InputDecoration(label: Text("Guess here")),
-                onSubmitted: (value) { print(value);
-                controller.clear();},
+                onSubmitted: (value) { 
+                  print(value);
+                  List correctness = [];
+                  for (int x = 0; x < value.length; x ++) {
+                    if (word[x] == value[x].toUpperCase()) {
+                      correctness.add(greenText);
+                    } else if (word.contains(value[x].toUpperCase())) {
+                        correctness.add(orangeText);
+                      } else {
+                        correctness.add(null);
+                      }
+                  }
+                  setState(() {
+                    guesses.add({"string": value.toUpperCase(), "correctness": correctness });
+                  });
+                controller.clear();
+                
+                },
               ),
             )
             
