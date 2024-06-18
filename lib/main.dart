@@ -37,6 +37,8 @@ class _MainAppState extends State<MainApp> {
 
   var inputFocusNode = FocusNode();
 
+  bool previouslyHoldingBackspace = false;
+
 
 
 
@@ -67,9 +69,19 @@ class _MainAppState extends State<MainApp> {
             ],
             Spacer(),
             Text(currentGuess, style: TextStyle(fontSize: 30),),
-            KeyboardListener(focusNode: inputFocusNode, child: Text("This is a keyboard listener"), autofocus: true, 
+            KeyboardListener(focusNode: inputFocusNode, child: Text("This is a keyboard listener - You will need to use a device with a hardware keyboard"), autofocus: true, 
             onKeyEvent: (value) {
-
+              if (value.physicalKey == PhysicalKeyboardKey.backspace) {
+                if (!previouslyHoldingBackspace) {
+                setState(() {
+                currentGuess = currentGuess.substring(0, currentGuess.length-1);
+                });
+                previouslyHoldingBackspace = true;
+                } else {
+                  previouslyHoldingBackspace = false;
+                }
+              }
+              
               if (value.physicalKey == PhysicalKeyboardKey.enter) {
                 if (currentGuess.length !=5) {
                   return;
