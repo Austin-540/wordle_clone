@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MaterialApp(home:MainApp()));
 }
 
 class MainApp extends StatefulWidget {
@@ -25,8 +25,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(title: Text("Definitely Wordle"),),
         body: Center(
           child: Column(children: [
@@ -46,7 +45,13 @@ class _MainAppState extends State<MainApp> {
                 decoration: InputDecoration(label: Text("Guess here")),
                 onSubmitted: (value) { 
                   print(value);
+                  if (value.length != 5) {
+                    return;
+                  }
                   List correctness = [];
+                    if (word == value.toUpperCase()) {
+                      showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                    }
                   for (int x = 0; x < value.length; x ++) {
                     if (word[x] == value[x].toUpperCase()) {
                       correctness.add(greenText);
@@ -67,7 +72,7 @@ class _MainAppState extends State<MainApp> {
             
           ],),
         ),
-      ),
-    );
+      );
+
   }
 }
