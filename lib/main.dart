@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        color: guess['correctness'][i] == greyText? Colors.grey: guess['correctness'] == orangeText? Colors.orange: Colors.green,
+                        color: guess['correctness'][i] == greyText? Colors.grey: guess['correctness'][i] == orangeText? Colors.orange: Colors.green,
                         child: SizedBox(
                           height: 40,
                           width: 40,
