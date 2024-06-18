@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MaterialApp(home:MainApp()));
@@ -15,7 +17,15 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   List guesses = [];
   TextEditingController controller = TextEditingController();
-  String word = "LINUX";
+  String word = "";
+  @override
+  void initState() {
+    super.initState();
+    do {
+      word = nouns[Random().nextInt(2536)].toUpperCase();
+  } while (word.length != 5);
+  print(word);
+  }
 
   TextStyle greenText = TextStyle(color: Color.fromARGB(255, 67, 67, 67), fontSize: 30);
   TextStyle orangeText = TextStyle(color: const Color.fromARGB(255, 82, 82, 82), fontSize: 30);
@@ -31,7 +41,9 @@ class _MainAppState extends State<MainApp> {
         body: Center(
           child: Column(children: [
             for (var guess in guesses) ... [
-              Row(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   for (int i =0; i < 5; i++) ... [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
