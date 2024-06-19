@@ -131,65 +131,69 @@ class _MainAppState extends State<MainApp> {
 
 
 
-                VirtualKeyboard(
-                  alwaysCaps: true,
-                  type: VirtualKeyboardType.Alphanumeric,
-                  height: 200,
-                  onKeyPress: (value) {
-                    switch (value.action) {
-                      case VirtualKeyboardKeyAction.Return:
-                        //run the code to submit a guess
-                        if (currentGuess.length !=5) {
-                  return;
-                }
-
-                print(currentGuess);
-
-                List correctness = [];
-                 if (word == currentGuess.toUpperCase()) {
-                      showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
-                    } else if (guesses.length == 5) {
-                      showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
-                        title: Text("You lost :("),
-                        content: Text("The word was ${word}"),
-                      ));
-                    }
-
-                    for (int x = 0; x < currentGuess.length; x ++) {
-                    if (word[x] == currentGuess[x].toUpperCase()) {
-                      correctness.add(greenText);
-                    } else if (word.contains(currentGuess[x].toUpperCase())) {
-                        correctness.add(orangeText);
-                      } else {
-                        correctness.add(greyText);
-                      }
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 500),
+                  
+                  child: VirtualKeyboard(
+                    alwaysCaps: true,
+                    type: VirtualKeyboardType.Alphanumeric,
+                    height: 200,
+                    onKeyPress: (value) {
+                      switch (value.action) {
+                        case VirtualKeyboardKeyAction.Return:
+                          //run the code to submit a guess
+                          if (currentGuess.length !=5) {
+                    return;
                   }
-                  setState(() {
-                    guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
-                  });
-
-
-
-                currentGuess = "";
-                        break;
-                      case VirtualKeyboardKeyAction.Space:
-                        break;
-                      case VirtualKeyboardKeyAction.Shift:
-                        break;
-                      case VirtualKeyboardKeyAction.Backspace:
-                        if (currentGuess != "") {
-                          setState(() {
-                          currentGuess = currentGuess.substring(0, currentGuess.length-1);
-                          });}
-                        break;
-                      default:
-                      setState(() {
-                        currentGuess += value.capsText;
-                      });
+                  
+                  print(currentGuess);
+                  
+                  List correctness = [];
+                   if (word == currentGuess.toUpperCase()) {
+                        showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                      } else if (guesses.length == 5) {
+                        showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
+                          title: Text("You lost :("),
+                          content: Text("The word was ${word}"),
+                        ));
+                      }
+                  
+                      for (int x = 0; x < currentGuess.length; x ++) {
+                      if (word[x] == currentGuess[x].toUpperCase()) {
+                        correctness.add(greenText);
+                      } else if (word.contains(currentGuess[x].toUpperCase())) {
+                          correctness.add(orangeText);
+                        } else {
+                          correctness.add(greyText);
+                        }
                     }
-                  },
-
-                  )
+                    setState(() {
+                      guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
+                    });
+                  
+                  
+                  
+                  currentGuess = "";
+                          break;
+                        case VirtualKeyboardKeyAction.Space:
+                          break;
+                        case VirtualKeyboardKeyAction.Shift:
+                          break;
+                        case VirtualKeyboardKeyAction.Backspace:
+                          if (currentGuess != "") {
+                            setState(() {
+                            currentGuess = currentGuess.substring(0, currentGuess.length-1);
+                            });}
+                          break;
+                        default:
+                        setState(() {
+                          currentGuess += value.capsText;
+                        });
+                      }
+                    },
+                  
+                    ),
+                )
 
                   ],),
         ),
