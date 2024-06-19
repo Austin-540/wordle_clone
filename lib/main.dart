@@ -176,6 +176,12 @@ class _MainAppState extends State<MainApp> {
                         break;
                       case VirtualKeyboardKeyAction.Shift:
                         break;
+                      case VirtualKeyboardKeyAction.Backspace:
+                        if (currentGuess != "") {
+                          setState(() {
+                          currentGuess = currentGuess.substring(0, currentGuess.length-1);
+                          });}
+                        break;
                       default:
                       setState(() {
                         currentGuess += value.capsText;
