@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'dart:math';
-
+import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 import 'package:flutter/services.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     do {
-      word = nouns[Random().nextInt(2536)].toUpperCase();
+      word = nouns[Random().nextInt(2535)].toUpperCase();
   } while (word.length != 5);
   print(word);
   }
@@ -54,7 +54,7 @@ class _MainAppState extends State<MainApp> {
                 children: [
                   for (int i =0; i < 5; i++) ... [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       child: Container(
                         color: guess['correctness'][i] == greyText? Colors.grey: guess['correctness'][i] == orangeText? Colors.orange: Colors.green,
                         child: SizedBox(
@@ -69,10 +69,13 @@ class _MainAppState extends State<MainApp> {
             ],
             Spacer(),
             Text(currentGuess, style: TextStyle(fontSize: 30),),
-            KeyboardListener(focusNode: inputFocusNode, child: Text("This is a keyboard listener - You will need to use a device with a hardware keyboard"), autofocus: true, 
+            KeyboardListener(focusNode: inputFocusNode, child: SizedBox(), autofocus: true, 
             onKeyEvent: (value) {
+              if(value.physicalKey == PhysicalKeyboardKey.space) {
+                return;
+              }
               if (value.physicalKey == PhysicalKeyboardKey.backspace) {
-                if (!previouslyHoldingBackspace) {
+                if (!previouslyHoldingBackspace && currentGuess != "") {
                 setState(() {
                 currentGuess = currentGuess.substring(0, currentGuess.length-1);
                 });
@@ -114,15 +117,74 @@ class _MainAppState extends State<MainApp> {
 
 
 
-                currentGuess = '';
+                currentGuess = "";
               }
               
               
               setState(() {
+                if (value.character != null && value.physicalKey != PhysicalKeyboardKey.enter) {
               currentGuess += value.character!.toUpperCase();
+                }
               inputFocusNode.requestFocus();
             });
             }),
+
+
+
+                VirtualKeyboard(
+                  alwaysCaps: true,
+                  type: VirtualKeyboardType.Alphanumeric,
+                  height: 200,
+                  onKeyPress: (value) {
+                    switch (value.action) {
+                      case VirtualKeyboardKeyAction.Return:
+                        //run the code to submit a guess
+                        if (currentGuess.length !=5) {
+                  return;
+                }
+
+                print(currentGuess);
+
+                List correctness = [];
+                 if (word == currentGuess.toUpperCase()) {
+                      showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                    } else if (guesses.length == 5) {
+                      showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
+                        title: Text("You lost :("),
+                        content: Text("The word was ${word}"),
+                      ));
+                    }
+
+                    for (int x = 0; x < currentGuess.length; x ++) {
+                    if (word[x] == currentGuess[x].toUpperCase()) {
+                      correctness.add(greenText);
+                    } else if (word.contains(currentGuess[x].toUpperCase())) {
+                        correctness.add(orangeText);
+                      } else {
+                        correctness.add(greyText);
+                      }
+                  }
+                  setState(() {
+                    guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
+                  });
+
+
+
+                currentGuess = "";
+                        break;
+                      case VirtualKeyboardKeyAction.Space:
+                        break;
+                      case VirtualKeyboardKeyAction.Shift:
+                        break;
+                      default:
+                      setState(() {
+                        currentGuess += value.capsText;
+                      });
+                    }
+                  },
+
+                  )
+
                   ],),
         ),
       );

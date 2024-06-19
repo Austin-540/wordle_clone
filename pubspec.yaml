@@ -10,6 +10,7 @@ dependencies:
   english_words: ^4.0.0
   flutter:
     sdk: flutter
+  virtual_keyboard_multi_language: ^1.0.3
 
 dev_dependencies:
   flutter_test:
