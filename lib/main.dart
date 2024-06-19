@@ -134,66 +134,37 @@ class _MainAppState extends State<MainApp> {
                 ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 500),
                   
-                  child: VirtualKeyboard(
-                    alwaysCaps: true,
-                    type: VirtualKeyboardType.Alphanumeric,
-                    height: 200,
-                    onKeyPress: (value) {
-                      switch (value.action) {
-                        case VirtualKeyboardKeyAction.Return:
-                          //run the code to submit a guess
-                          if (currentGuess.length !=5) {
-                    return;
-                  }
-                  
-                  print(currentGuess);
-                  
-                  List correctness = [];
-                   if (word == currentGuess.toUpperCase()) {
-                        showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
-                      } else if (guesses.length == 5) {
-                        showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
-                          title: Text("You lost :("),
-                          content: Text("The word was ${word}"),
-                        ));
-                      }
-                  
-                      for (int x = 0; x < currentGuess.length; x ++) {
-                      if (word[x] == currentGuess[x].toUpperCase()) {
-                        correctness.add(greenText);
-                      } else if (word.contains(currentGuess[x].toUpperCase())) {
-                          correctness.add(orangeText);
-                        } else {
-                          correctness.add(greyText);
-                        }
-                    }
-                    setState(() {
-                      guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
-                    });
-                  
-                  
-                  
-                  currentGuess = "";
-                          break;
-                        case VirtualKeyboardKeyAction.Space:
-                          break;
-                        case VirtualKeyboardKeyAction.Shift:
-                          break;
-                        case VirtualKeyboardKeyAction.Backspace:
-                          if (currentGuess != "") {
-                            setState(() {
-                            currentGuess = currentGuess.substring(0, currentGuess.length-1);
-                            });}
-                          break;
-                        default:
-                        setState(() {
-                          currentGuess += value.capsText;
-                        });
-                      }
-                    },
-                  
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        for (var letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DELETE"])
+                        Text(letter)
+                      ],),
                     ),
-                )
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        for (var letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L", "ENTER"])
+                        Text(letter)
+                      ],),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        for (var letter in ["Z", "X", "C", "V", "B", "N", "M", "             "])
+                        Text(letter)
+                      ],),
+                    ),
+
+                  ]
+                  )                )
 
                   ],),
         ),
