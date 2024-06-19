@@ -33,12 +33,45 @@ class _MainAppState extends State<MainApp> {
   TextStyle orangeText = TextStyle(color: const Color.fromARGB(255, 82, 82, 82), fontSize: 30);
   TextStyle greyText = TextStyle(fontSize: 30);
 
+
   String currentGuess = "";
 
   var inputFocusNode = FocusNode();
 
   bool previouslyHoldingBackspace = false;
 
+
+  Map letterStatuses = {
+    "A": Colors.white60,
+    "B": Colors.white60,
+    "C": Colors.white60,
+    "D": Colors.white60,
+    "E": Colors.white60,
+    "F": Colors.white60,
+    "G": Colors.white60,
+    "H": Colors.white60,
+    "I": Colors.white60,
+    "J": Colors.white60,
+    "K": Colors.white60,
+    "L": Colors.white60,
+    "M": Colors.white60,
+    "N": Colors.white60,
+    "O": Colors.white60,
+    "P": Colors.white60,
+    "Q": Colors.white60,
+    "R": Colors.white60,
+    "S": Colors.white60,
+    "T": Colors.white60,
+    "U": Colors.white60,
+    "V": Colors.white60,
+    "W": Colors.white60,
+    "X": Colors.white60,
+    "Y": Colors.white60,
+    "Z": Colors.white60,
+    "DELETE": Colors.white60,
+    "ENTER": Colors.white60,
+    "             ": Colors.white60
+  };
 
 
 
@@ -104,12 +137,21 @@ class _MainAppState extends State<MainApp> {
 
                     for (int x = 0; x < currentGuess.length; x ++) {
                     if (word[x] == currentGuess[x].toUpperCase()) {
-                      correctness.add(greenText);
-                    } else if (word.contains(currentGuess[x].toUpperCase())) {
-                        correctness.add(orangeText);
-                      } else {
-                        correctness.add(greyText);
-                      }
+                        correctness.add(greenText);
+                        setState(() {
+                        letterStatuses[currentGuess[x]] = Colors.green;
+                        });
+                      } else if (word.contains(currentGuess[x].toUpperCase())) {
+                          correctness.add(orangeText);
+                          setState(() {
+                          letterStatuses[currentGuess[x]] = Colors.orange;
+                          });
+                        } else {
+                          correctness.add(greyText);
+                          setState(() {
+                          letterStatuses[currentGuess[x]] = Colors.grey;
+                          });
+                        }
                   }
                   setState(() {
                     guesses.add({"string": currentGuess.toUpperCase(), "correctness": correctness });
@@ -141,10 +183,11 @@ class _MainAppState extends State<MainApp> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                         for (var letter in ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DELETE"]) ... [
-                        GestureDetector(child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Text(letter)), onTap: () {
+                        GestureDetector(child: Container(
+                          color: letterStatuses[letter],
+                          width: 30,
+                          height: 25,
+                          child: Center(child: Text(letter))), onTap: () {
                             if (letter == "DELETE") {
                               //backspace code
                               if (currentGuess != "") {
@@ -167,10 +210,11 @@ class _MainAppState extends State<MainApp> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                         for (var letter in ["A", "S", "D", "F", "G", "H", "J", "K", "L", "ENTER"]) ... [
-                        GestureDetector(child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Text(letter)), onTap: () {
+                        GestureDetector(child: Container(
+                          color: letterStatuses[letter],
+                          width: 30,
+                          height: 25,
+                          child: Center(child: Text(letter))), onTap: () {
                             if (letter == "ENTER"){
                               //submit code
                               if (currentGuess.length !=5) {
@@ -192,10 +236,19 @@ class _MainAppState extends State<MainApp> {
                       for (int x = 0; x < currentGuess.length; x ++) {
                       if (word[x] == currentGuess[x].toUpperCase()) {
                         correctness.add(greenText);
+                        setState(() {
+                        letterStatuses[currentGuess[x]] = Colors.green;
+                        });
                       } else if (word.contains(currentGuess[x].toUpperCase())) {
                           correctness.add(orangeText);
+                          setState(() {
+                          letterStatuses[currentGuess[x]] = Colors.orange;
+                          });
                         } else {
                           correctness.add(greyText);
+                          setState(() {
+                          letterStatuses[currentGuess[x]] = Colors.grey;
+                          });
                         }
                     }
                     setState(() {
@@ -222,10 +275,11 @@ class _MainAppState extends State<MainApp> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                           for (var letter in ["Z", "X", "C", "V", "B", "N", "M", "             "]) ... [
-                          GestureDetector(child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Text(letter)), onTap: () {
+                          GestureDetector(child: Container(
+                            color: letterStatuses[letter],
+                          width: 30,
+                          height: 25,
+                          child: Center(child: Text(letter))), onTap: () {
                             if (letter == "             ") {
                               return;
                             }
