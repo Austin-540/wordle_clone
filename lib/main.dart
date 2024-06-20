@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'dart:math';
 import 'package:flutter/services.dart';
+import 'package:pocketbase/pocketbase.dart';
+
+import 'leaderboard.dart';
+final pb = PocketBase('https://belligerent-beach.pockethost.io');
 
 void main() {
   runApp(const MaterialApp(home:MainApp()));
@@ -105,7 +109,7 @@ class _MainAppState extends State<MainApp> {
             Spacer(),
             Text(currentGuess, style: TextStyle(fontSize: 30),),
             KeyboardListener(focusNode: inputFocusNode, child: SizedBox(), autofocus: true, 
-            onKeyEvent: (value) {
+            onKeyEvent: (value) async{
               if(value.physicalKey == PhysicalKeyboardKey.space) {
                 return;
               }
@@ -129,10 +133,15 @@ class _MainAppState extends State<MainApp> {
 
                 List correctness = [];
                  if (word == currentGuess.toUpperCase()) {
+                  var finalScore = DateTime.now().difference(startTime!).inMilliseconds/1000;
+
+                  pb.collection('high_scores').create(body: {"time": finalScore});
+
                       showDialog(context: context, builder: (context)=>AlertDialog(
                         title: Text("You Win!"),
-                        content: Text("Your time is: ${DateTime.now().difference(startTime!).inMilliseconds/1000} seconds"),
-                        ));
+                        content: Text("Your time is: $finalScore seconds"),
+                        actions: [TextButton(child: Text("See the leaderboard"),
+                        onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                     } else if (guesses.length == 5) {
                       showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
                         title: Text("You lost :("),
@@ -219,7 +228,7 @@ class _MainAppState extends State<MainApp> {
                           color: letterStatuses[letter],
                           width: 30,
                           height: 25,
-                          child: Center(child: Text(letter))), onTap: () {
+                          child: Center(child: Text(letter))), onTap: () async{
                             if (letter == "ENTER"){
                               //submit code
                               if (currentGuess.length !=5) {
@@ -230,7 +239,13 @@ class _MainAppState extends State<MainApp> {
                   
                   List correctness = [];
                    if (word == currentGuess.toUpperCase()) {
-                        showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                    var finalScore = DateTime.now().difference(startTime!).inMilliseconds/1000;
+
+                  pb.collection('high_scores').create(body: {"time": finalScore});
+
+                        showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),
+                        actions: [TextButton(child: Text("See the leaderboard"),
+                        onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                       } else if (guesses.length == 5) {
                         showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
                           title: Text("You lost :("),
