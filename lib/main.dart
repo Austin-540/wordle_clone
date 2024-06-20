@@ -19,12 +19,15 @@ class _MainAppState extends State<MainApp> {
   List guesses = [];
   TextEditingController controller = TextEditingController();
   String word = "";
+  DateTime? startTime;
   @override
   void initState() {
     super.initState();
     do {
       word = nouns[Random().nextInt(2535)].toUpperCase();
   } while (word.length != 5);
+
+  startTime = DateTime.now();
   print(word);
   }
 
@@ -126,7 +129,10 @@ class _MainAppState extends State<MainApp> {
 
                 List correctness = [];
                  if (word == currentGuess.toUpperCase()) {
-                      showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),));
+                      showDialog(context: context, builder: (context)=>AlertDialog(
+                        title: Text("You Win!"),
+                        content: Text("Your time is: ${DateTime.now().difference(startTime!).inMilliseconds/1000} seconds"),
+                        ));
                     } else if (guesses.length == 5) {
                       showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
                         title: Text("You lost :("),
