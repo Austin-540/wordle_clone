@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'dart:math';
-import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 import 'package:flutter/services.dart';
 
 void main() {
