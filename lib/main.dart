@@ -141,7 +141,7 @@ class _MainAppState extends State<MainApp> {
                         title: Text("You Win!"),
                         content: Text("Your time is: $finalScore seconds"),
                         actions: [
-                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
+                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/wordle_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
                           TextButton(child: Text("See the leaderboard"),
                         onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                     } else if (guesses.length == 5) {
@@ -149,7 +149,7 @@ class _MainAppState extends State<MainApp> {
                         title: Text("You lost :("),
                         content: Text("The word was ${word}"),
                         actions: [
-                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
+                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/wordle_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
                         ],
                       ));
                     }
@@ -251,7 +251,7 @@ class _MainAppState extends State<MainApp> {
                         showDialog(context: context, builder: (context)=>AlertDialog(
                         title: Text("You Win!"),
                         content: Text("Your time is: $finalScore seconds"),
-                        actions: [TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
+                        actions: [TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/wordle_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
                           TextButton(child: Text("See the leaderboard"),
                         onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                       } else if (guesses.length == 5) {
@@ -259,7 +259,7 @@ class _MainAppState extends State<MainApp> {
                           title: Text("You lost :("),
                           content: Text("The word was ${word}"),
                           actions: [
-                            TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
+                            TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/wordle_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
                           ],
                         ));
                       }
