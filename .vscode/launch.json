@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/austin/Programming/wordle_clone/linux/flutter",
+      "program": "/Users/austin/Programming/wordle_clone/linux/flutter/build/Debug/outDebug"
+    }
+  ]
+}

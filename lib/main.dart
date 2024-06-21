@@ -3,6 +3,7 @@ import 'package:english_words/english_words.dart';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'leaderboard.dart';
 final pb = PocketBase('https://belligerent-beach.pockethost.io');
@@ -32,7 +33,6 @@ class _MainAppState extends State<MainApp> {
   } while (word.length != 5);
 
   startTime = DateTime.now();
-  print(word);
   }
 
   TextStyle greenText = TextStyle(color: Color.fromARGB(255, 67, 67, 67), fontSize: 30);
@@ -140,12 +140,17 @@ class _MainAppState extends State<MainApp> {
                       showDialog(context: context, builder: (context)=>AlertDialog(
                         title: Text("You Win!"),
                         content: Text("Your time is: $finalScore seconds"),
-                        actions: [TextButton(child: Text("See the leaderboard"),
+                        actions: [
+                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
+                          TextButton(child: Text("See the leaderboard"),
                         onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                     } else if (guesses.length == 5) {
                       showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
                         title: Text("You lost :("),
                         content: Text("The word was ${word}"),
+                        actions: [
+                          TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
+                        ],
                       ));
                     }
 
@@ -243,13 +248,19 @@ class _MainAppState extends State<MainApp> {
 
                   pb.collection('high_scores').create(body: {"time": finalScore});
 
-                        showDialog(context: context, builder: (context)=>AlertDialog(title: Text("You Win!"),
-                        actions: [TextButton(child: Text("See the leaderboard"),
+                        showDialog(context: context, builder: (context)=>AlertDialog(
+                        title: Text("You Win!"),
+                        content: Text("Your time is: $finalScore seconds"),
+                        actions: [TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart")),
+                          TextButton(child: Text("See the leaderboard"),
                         onPressed: () =>Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LeaderboardPage()), (route) => false),)],));
                       } else if (guesses.length == 5) {
                         showDialog(barrierDismissible: false,context: context, builder: (context) => AlertDialog(
                           title: Text("You lost :("),
                           content: Text("The word was ${word}"),
+                          actions: [
+                            TextButton(onPressed: () async=> await launchUrl(Uri.parse("https://austin-540.github.io/world_clone"), webOnlyWindowName: "_self"), child: Text("Restart"))
+                          ],
                         ));
                       }
                   
